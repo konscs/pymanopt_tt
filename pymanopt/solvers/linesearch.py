@@ -7,7 +7,7 @@ def findAlphaOpt(x,d,cost,init_guess_alpha,manifold,tol=0.01):
     print('optimizing step size.')
     target = lambda alpha: cost(manifold.retr(x,d*alpha))
     init = init_guess_alpha
-    options = {'disp': False, 'maxiter': 50, 'fatol': tol, 'eps':.1}
+    options = {'disp': False, 'maxiter': 50, 'fatol': tol}
     min_obj = minimize(target, init, method='Nelder-Mead', options=options)
     print(min_obj.message)
     return min_obj.x[0]
@@ -17,12 +17,12 @@ def troubleshootWrongMove(x,d,objective,alpha,man):
     print('nan encountered: Inappropriate move.')
     print('attempting recovery by finding optimal step.')
     x = man.renormalize(x)
-    alpha = findInitAlphaOpt(x,d,objective,alpha,man)
+    alpha = findAlphaOpt(x,d,objective,alpha,man)
     newx = man.retr(x, d*alpha)
     newf = objective(newx)
     return newx, newf
 
-def isNotFeasable(val):
+def isNotFeasible(val):
 
     return (math.isnan(val) or math.isinf(val))
 
@@ -77,7 +77,7 @@ class LineSearchBackTracking(object):
         # Make the chosen step and compute the cost there.
         newx = manifold.retr(x, alpha * d)
         newf = objective(newx)
-        if not isNotFeasable(newf):
+        if isNotFeasible(newf):
             newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
         step_count = 1
 
@@ -91,7 +91,7 @@ class LineSearchBackTracking(object):
             # and look closer down the line
             newx = manifold.retr(x, alpha * d)
             newf = objective(newx)
-            if not isNotFeasable(newf):
+            if isNotFeasible(newf):
                 newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
 
             step_count = step_count + 1
@@ -132,7 +132,7 @@ class LineSearchAdaptive(object):
 
         newx = man.retr(x, alpha * d)
         newf = objective(newx)
-        if not isNotFeasable(newf):
+        if isNotFeasable(newf):
             newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
         cost_evaluations = 1
 
@@ -144,7 +144,7 @@ class LineSearchAdaptive(object):
             # Look closer down the line.
             newx = man.retr(x, alpha * d)
             newf = objective(newx)
-            if not isNotFeasable(newf):
+            if isNotFeasable(newf):
                 newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
 
             cost_evaluations += 1
