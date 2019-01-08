@@ -26,6 +26,7 @@ class FixedRankTT(Manifold):
         return np.sqrt(self.dim)
 
     def dist(self, X, Y):
+        # should be updated if further info about geodesic available
         return t3f.frobenius_norm(X-Y)
         
     def inner(self, X, G, H):
@@ -75,6 +76,7 @@ class FixedRankTT(Manifold):
         return t3f.round(X-Y,max_tt_rank=max(t3f.lazy_tt_ranks(X)))
 
     def pairmean(self, X, Y):
+        # should be updated in accordance with dist
         return t3f.round(t3f.multiply(X+Y,0.5),max_tt_rank=max(t3f.lazy_tt_ranks(X)))
 
     def zerovec(self, X):
