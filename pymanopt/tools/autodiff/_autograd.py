@@ -8,7 +8,6 @@ except ImportError:
     np = None
     grad = None
 
-import t3f
 from ._backend import Backend, assert_backend_available
 
 
@@ -28,9 +27,6 @@ class AutogradBackend(Backend):
         def func(x):
             if type(x) in (list, tuple):
                 return objective([np.array(xi) for xi in x])
-            elif type(x) in [t3f.tensor_train.TensorTrain]:
-                # types not to cast to np.array
-                return objective(x)
             else:
                 return objective(np.array(x))
 
