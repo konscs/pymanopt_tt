@@ -16,9 +16,9 @@ def troubleshootWrongMove(x,d,objective,alpha,man):
 
     print('nan encountered: Inappropriate move.')
     print('attempting recovery by finding optimal step.')
-    old_x = man.renormalize(old_x)
-    alpha = findInitAlphaOpt(old_x,d,objective,alpha,man)
-    newx = man.retr(old_x, d*alpha)
+    x = man.renormalize(x)
+    alpha = findInitAlphaOpt(x,d,objective,alpha,man)
+    newx = man.retr(x, d*alpha)
     newf = objective(newx)
     return newx, newf
 
