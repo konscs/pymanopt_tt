@@ -1,7 +1,7 @@
 import numpy as np
 
 from pymanopt.manifolds.manifold import Manifold
-from t3f import TensorTrain
+import t3f
 
 class FixedRankTT(Manifold):
     
