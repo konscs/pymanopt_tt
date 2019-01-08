@@ -5,7 +5,7 @@ object to feed to one of the solvers.
 from __future__ import print_function
 
 from pymanopt.tools.autodiff import (AutogradBackend, TheanoBackend,
-                                     TensorflowBackend)
+                                     TensorflowBackend, T3FBackend)
 
 
 class Problem(object):
@@ -72,6 +72,7 @@ class Problem(object):
 
         self._backends = list(
             filter(lambda b: b.is_available(), [
+                T3FBackend(),
                 TheanoBackend(),
                 AutogradBackend(),
                 TensorflowBackend()
@@ -125,9 +126,13 @@ class Problem(object):
         if self._grad is None:
             # Explicit access forces computation/compilation if necessary.
             egrad = self.egrad
-
-            def grad(x):
-                return self.manifold.egrad2rgrad(x, egrad(x))
+            
+            if T3FBackend().is_compatible(self._original_cost, self._arg):
+                def grad(x):
+                    return egrad(x)
+            else:
+                def grad(x):
+                    return self.manifold.egrad2rgrad(x, egrad(x))
             self._grad = grad
         return self._grad
 
@@ -146,9 +151,13 @@ class Problem(object):
         if self._hess is None:
             # Explicit access forces computation if necessary.
             ehess = self.ehess
-
-            def hess(x, a):
-                return self.manifold.ehess2rhess(
-                    x, self.egrad(x), ehess(x, a), a)
+            
+            if T3FBackend().is_compatible(self._original_cost, self._arg):
+                def hess(x, a):
+                    return ehess(x, a)
+            else:
+                def hess(x, a):
+                    return self.manifold.ehess2rhess(
+                        x, self.egrad(x), ehess(x, a), a)
             self._hess = hess
         return self._hess
