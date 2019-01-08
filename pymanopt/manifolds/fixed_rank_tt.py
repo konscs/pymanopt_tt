@@ -7,12 +7,12 @@ class FixedRankTT(Manifold):
     
     # Manifold of tensors having fixed TT rank,
 
-    def __init__(self, tt_cores, shape=None, tt_ranks=None, convert_to_tensors=True):
+    def __init__(self, tt, shape=None, tt_ranks=None, convert_to_tensors=True):
               
-        tens = t3f.TensorTrain(tt_cores, shape=None, tt_ranks=None, convert_to_tensors=True)
-        self._name = ("Manifold of TT_Tensors with fixed tt_rank " + str(tens.get_tt_ranks()))
-        self._shape = t3f.lazy_shape(tens)
-        self._tt_rank = t3f.lazy_tt_ranks(tens)
+        tt = tt if type(tt)==t3f.tensor_train.TensorTrain else t3f.TensorTrain(tt, shape=None, tt_ranks=None, convert_to_tensors=True)
+        self._name = ("Manifold of TT_Tensors with fixed tt_rank " + str(tt.get_tt_ranks()))
+        self._shape = t3f.lazy_shape(tt)
+        self._tt_rank = t3f.lazy_tt_ranks(tt)
 
     def __str__(self):
         return self._name
