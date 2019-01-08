@@ -9,9 +9,10 @@ from .euclidean import Euclidean, Symmetric, SkewSymmetric
 from .product import Product
 from .fixed_rank import FixedRankEmbedded
 from .rotations import Rotations
+from .fixed_rank_tt import FixedRankTT
 
 __all__ = ["Grassmann", "Sphere", "SphereSubspaceIntersection",
            "ComplexCircle", "SphereSubspaceComplementIntersection", "Stiefel",
            "PSDFixedRank", "PSDFixedRankComplex", "Elliptope",
            "PositiveDefinite", "Oblique", "Euclidean", "Product", "Symmetric",
-           "FixedRankEmbedded", "Rotations", "SkewSymmetric"]
+           "FixedRankEmbedded", "Rotations", "SkewSymmetric", "FixedRankTT"]
