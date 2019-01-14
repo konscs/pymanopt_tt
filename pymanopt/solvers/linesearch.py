@@ -133,7 +133,7 @@ class LineSearchAdaptive(object):
         newx = man.retr(x, alpha * d)
         newf = objective(newx)
         if isNotFeasible(newf):
-            newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
+            newx, newf = troubleshootWrongMove(x,d,objective,alpha,man)    
         cost_evaluations = 1
 
         while (newf > f0 + self._suff_decr * alpha * df0 and
@@ -145,7 +145,7 @@ class LineSearchAdaptive(object):
             newx = man.retr(x, alpha * d)
             newf = objective(newx)
             if isNotFeasible(newf):
-                newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
+                newx, newf = troubleshootWrongMove(x,d,objective,alpha,man)    
 
             cost_evaluations += 1
 
