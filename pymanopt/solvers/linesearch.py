@@ -78,7 +78,7 @@ class LineSearchBackTracking(object):
         newx = manifold.retr(x, alpha * d)
         newf = objective(newx)
         if isNotFeasible(newf):
-            newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
+            newx, newf = troubleshootWrongMove(x,d,objective,alpha,man)    
         step_count = 1
 
         # Backtrack while the Armijo criterion is not satisfied
@@ -92,7 +92,7 @@ class LineSearchBackTracking(object):
             newx = manifold.retr(x, alpha * d)
             newf = objective(newx)
             if isNotFeasible(newf):
-                newx, newf = troubleshootWrongMove(newx,d,objective,alpha,man)    
+                newx, newf = troubleshootWrongMove(x,d,objective,alpha,man)    
 
             step_count = step_count + 1
 
